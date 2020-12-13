@@ -25,28 +25,21 @@ We have used the Resnet 50 model in our use case. The Resnet architecture consis
 We are using the Resnet-50 model for emotion detection and add to it three layers and ReLu activation function in  and finally softmax activation function layer as a classifier at the end. We have used Adam optimizer and categorical cross entropy loss while training the model.The input to this model is through a custom data loader with a batch size of 128.0
 
 
-Given an image, it goes through the following steps in our system.\\ 
-\begin{enumerate}
-\item We input an image to the system. Its format can be .png or .jpeg \\
-\item The face recognition performs face detection by cropping the image around the face and extracting only the face to be recognized from the entire image using bounding boxes. We resize the pixels of the extracted image to the model size which is 160*160 in our case. This process is labelled as face alignment and standardisation.
-\item We use a prebuilt keras model for face recognition built on the facenet framework using the keras api  available as an h5 file. We train the this model on the train dataset that has images belonging to  5 different classes/people.It converts each face into an embedding which means that we extract high-quality features from each face.  and produce a 128 dimensional vector representation of the same. This vector is normalized and the vector size can be changed from 128 to 1024. Faces with similar face embeddings have vectors that are closer to each other. \\
-\item We are using Linear SVM as the classifier model. The face embeddings that are similar to each other are clustered together and the model predicts the right class that the face belongs to
-% with an accuracy of 90+\% every time.\\
-\item For emotion detection the model requires images to be of 48x48 pixel and a grayscale image. 
-% We have a csv file that contains a string column containing space-separated pixel values in row major order. 
+Given an image, it goes through the following steps in our system.
+
+We input an image to the system. Its format can be .png or .jpeg 
+The face recognition performs face detection by cropping the image around the face and extracting only the face to be recognized from the entire image using bounding boxes. We resize the pixels of the extracted image to the model size which is 160*160 in our case. This process is labelled as face alignment and standardisation.
+We use a prebuilt keras model for face recognition built on the facenet framework using the keras api  available as an h5 file. We train the this model on the train dataset that has images belonging to  5 different classes/people.It converts each face into an embedding which means that we extract high-quality features from each face.  and produce a 128 dimensional vector representation of the same. This vector is normalized and the vector size can be changed from 128 to 1024. Faces with similar face embeddings have vectors that are closer to each other. \\
+We are using Linear SVM as the classifier model. The face embeddings that are similar to each other are clustered together and the model predicts the right class that the face belongs to.
+For emotion detection the model requires images to be of 48x48 pixel and a grayscale image. 
 So we did some data preprocessing like image resizing, realignment etc. agian on our input image so that it can be used in our emotion detection model.
-% \item We initialize all the parameters of our model and fit the data on the training dataset and train model for 20 epochs. We get a training accuracy of 90\% and validation accuracy of 66\% \\
-% \item Later we alter the hyper parameter like learning rate to find out that lr= 1e-5 gives the best accuracy which is 96\% for training and 67\% for validation data.\\
-\item We then predict the emotions that are depicted in the image. 
-% We got an accuracy of 69\% on our test data set.\\
-\end{enumerate}
+We then predict the emotions that are depicted in the image. 
 
 Results of our model: 
-begin {enumerate}
-\item The face recognition model predicts the right class that the face belongs to with an accuracy of 90+% every time.
-\item The emotion detection model gives accuracy of 67\%
-\item By varying the learning rate hyper parameter we notes that the learning rate that gives the best results using Adam optimizer is 1e-4 graphs for different learning rates are shown in the figures below and Table 1.
-\item According to Table 2.We also notices that beyond five epochs the accuracy does not vary a lot so we did early stopping after 5 epochs
-\item To get more insights about our results we plotted a confusion matrix between the predicted and true labels for our test dataset. We found that we could predict “Happy” emotion correctly 88 \% of the times which was the highest and we mis predicted “Fear” emotion the most. 
-\item Fear was mostly classified as Sad and disgust was classified as angry which can be understandable that these emotions could get interchanged.
-\end{enumerate}
+The face recognition model predicts the right class that the face belongs to with an accuracy of 90+% every time.
+The emotion detection model gives accuracy of 67\%
+By varying the learning rate hyper parameter we notes that the learning rate that gives the best results using Adam optimizer is 1e-4. 
+According to Table 2.We also notices that beyond five epochs the accuracy does not vary a lot so we did early stopping after 5 epochs
+To get more insights about our results we plotted a confusion matrix between the predicted and true labels for our test dataset. We found that we could predict “Happy” emotion correctly 88 \% of the times which was the highest and we mis predicted “Fear” emotion the most. 
+Fear was mostly classified as Sad and disgust was classified as angry which can be understandable that these emotions could get interchanged.
+
